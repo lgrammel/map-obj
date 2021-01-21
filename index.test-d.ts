@@ -1,5 +1,5 @@
 import {expectType, expectAssignable} from 'tsd';
-import mapObject = require('./index.js');
+import mapObject from './index.js';
 
 const options: mapObject.Options = {};
 

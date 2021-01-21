@@ -1,5 +1,3 @@
-'use strict';
-
 const isObject = value => typeof value === 'object' && value !== null;
 
 // Customized for this use-case
@@ -9,7 +7,7 @@ const isObjectCustom = value =>
 	!(value instanceof Error) &&
 	!(value instanceof Date);
 
-const mapObject = (object, mapper, options, isSeen = new WeakMap()) => {
+const mapObjectRecursive = (object, mapper, options, isSeen = new WeakMap()) => {
 	options = {
 		deep: false,
 		target: {},
@@ -25,7 +23,7 @@ const mapObject = (object, mapper, options, isSeen = new WeakMap()) => {
 	const {target} = options;
 	delete options.target;
 
-	const mapArray = array => array.map(element => isObjectCustom(element) ? mapObject(element, mapper, options, isSeen) : element);
+	const mapArray = array => array.map(element => isObjectCustom(element) ? mapObjectRecursive(element, mapper, options, isSeen) : element);
 	if (Array.isArray(object)) {
 		return mapArray(object);
 	}
@@ -36,7 +34,7 @@ const mapObject = (object, mapper, options, isSeen = new WeakMap()) => {
 		if (options.deep && shouldRecurse && isObjectCustom(newValue)) {
 			newValue = Array.isArray(newValue) ?
 				mapArray(newValue) :
-				mapObject(newValue, mapper, options, isSeen);
+				mapObjectRecursive(newValue, mapper, options, isSeen);
 		}
 
 		target[newKey] = newValue;
@@ -45,10 +43,12 @@ const mapObject = (object, mapper, options, isSeen = new WeakMap()) => {
 	return target;
 };
 
-module.exports = (object, mapper, options) => {
+const mapObject = (object, mapper, options) => {
 	if (!isObject(object)) {
 		throw new TypeError(`Expected an object, got \`${object}\` (${typeof object})`);
 	}
 
-	return mapObject(object, mapper, options);
+	return mapObjectRecursive(object, mapper, options);
 };
+
+export default mapObject;

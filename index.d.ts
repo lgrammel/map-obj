@@ -55,13 +55,13 @@ Map object keys and values into a new object.
 
 @example
 ```
-import mapObject = require('map-obj');
+import mapObject from 'map-obj';
 
 const newObject = mapObject({foo: 'bar'}, (key, value) => [value, key]);
 //=> {bar: 'foo'}
 ```
 */
-declare function mapObject<
+export function mapObject<
 	SourceObjectType extends object,
 	TargetObjectType extends {[key: string]: any},
 	MappedObjectKeyType extends string,
@@ -75,7 +75,7 @@ declare function mapObject<
 	>,
 	options: mapObject.DeepOptions & mapObject.TargetOptions<TargetObjectType>
 ): TargetObjectType & {[key: string]: unknown};
-declare function mapObject<
+export function mapObject<
 	SourceObjectType extends object,
 	MappedObjectKeyType extends string,
 	MappedObjectValueType
@@ -88,7 +88,7 @@ declare function mapObject<
 	>,
 	options: mapObject.DeepOptions
 ): {[key: string]: unknown};
-declare function mapObject<
+export function mapObject<
 	SourceObjectType extends {[key: string]: any},
 	TargetObjectType extends {[key: string]: any},
 	MappedObjectKeyType extends string,
@@ -102,7 +102,7 @@ declare function mapObject<
 	>,
 	options: mapObject.TargetOptions<TargetObjectType>
 ): TargetObjectType & {[K in MappedObjectKeyType]: MappedObjectValueType};
-declare function mapObject<
+export function mapObject<
 	SourceObjectType extends {[key: string]: any},
 	MappedObjectKeyType extends string,
 	MappedObjectValueType
@@ -116,4 +116,4 @@ declare function mapObject<
 	options?: mapObject.Options
 ): {[K in MappedObjectKeyType]: MappedObjectValueType};
 
-export = mapObject;
+export default mapObject;
