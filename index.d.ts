@@ -1,6 +1,6 @@
 declare namespace mapObject {
 	type Mapper<
-		SourceObjectType extends {[key: string]: any},
+		SourceObjectType extends Record<'key', any>,
 		MappedObjectKeyType extends string,
 		MappedObjectValueType
 	> = (
@@ -10,7 +10,7 @@ declare namespace mapObject {
 	) => [
 		targetKey: MappedObjectKeyType,
 		targetValue: MappedObjectValueType,
-		mapperOptions?: mapObject.MapperOptions
+		mapperOption?: MapperOptions
 	];
 
 	interface Options {
@@ -26,14 +26,14 @@ declare namespace mapObject {
 
 		@default {}
 		*/
-		target?: {[key: string]: any};
+		target?: Record<'key', any>;
 	}
 
 	interface DeepOptions extends Options {
 		deep: true;
 	}
 
-	interface TargetOptions<TargetObjectType extends {[key: string]: any}> extends Options {
+	interface TargetOptions<TargetObjectType extends Record<'key', any>> extends Options {
 		target: TargetObjectType;
 	}
 
@@ -62,56 +62,56 @@ const newObject = mapObject({foo: 'bar'}, (key, value) => [value, key]);
 ```
 */
 export function mapObject<
-	SourceObjectType extends object,
-	TargetObjectType extends {[key: string]: any},
+	SourceObjectType extends Record<string, unknown>,
+	TargetObjectType extends Record<'key', any>,
 	MappedObjectKeyType extends string,
 	MappedObjectValueType
 >(
 	source: SourceObjectType,
 	mapper: mapObject.Mapper<
-		SourceObjectType,
-		MappedObjectKeyType,
-		MappedObjectValueType
+	SourceObjectType,
+	MappedObjectKeyType,
+	MappedObjectValueType
 	>,
 	options: mapObject.DeepOptions & mapObject.TargetOptions<TargetObjectType>
-): TargetObjectType & {[key: string]: unknown};
+): TargetObjectType & Record<'key', unknown>;
 export function mapObject<
-	SourceObjectType extends object,
+	SourceObjectType extends Record<string, unknown>,
 	MappedObjectKeyType extends string,
 	MappedObjectValueType
 >(
 	source: SourceObjectType,
 	mapper: mapObject.Mapper<
-		SourceObjectType,
-		MappedObjectKeyType,
-		MappedObjectValueType
+	SourceObjectType,
+	MappedObjectKeyType,
+	MappedObjectValueType
 	>,
 	options: mapObject.DeepOptions
-): {[key: string]: unknown};
+): Record<'key', unknown>;
 export function mapObject<
-	SourceObjectType extends {[key: string]: any},
-	TargetObjectType extends {[key: string]: any},
+	SourceObjectType extends Record<'key', any>,
+	TargetObjectType extends Record<'key', any>,
 	MappedObjectKeyType extends string,
 	MappedObjectValueType
 >(
 	source: SourceObjectType,
 	mapper: mapObject.Mapper<
-		SourceObjectType,
-		MappedObjectKeyType,
-		MappedObjectValueType
+	SourceObjectType,
+	MappedObjectKeyType,
+	MappedObjectValueType
 	>,
 	options: mapObject.TargetOptions<TargetObjectType>
 ): TargetObjectType & {[K in MappedObjectKeyType]: MappedObjectValueType};
 export function mapObject<
-	SourceObjectType extends {[key: string]: any},
+	SourceObjectType extends Record<'key', any>,
 	MappedObjectKeyType extends string,
 	MappedObjectValueType
 >(
 	source: SourceObjectType,
 	mapper: mapObject.Mapper<
-		SourceObjectType,
-		MappedObjectKeyType,
-		MappedObjectValueType
+	SourceObjectType,
+	MappedObjectKeyType,
+	MappedObjectValueType
 	>,
 	options?: mapObject.Options
 ): {[K in MappedObjectKeyType]: MappedObjectValueType};

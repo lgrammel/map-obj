@@ -1,5 +1,5 @@
 import test from 'ava';
-import mapObject from '.';
+import mapObject from './index.js';
 
 test('main', t => {
 	t.is(mapObject({foo: 'bar'}, key => [key, 'unicorn']).foo, 'unicorn');
@@ -150,5 +150,5 @@ test('handles circular references', t => {
 test('validates input', t => {
 	t.throws(() => {
 		mapObject(1, () => {});
-	}, TypeError);
+	}, {instanceOf: TypeError});
 });
